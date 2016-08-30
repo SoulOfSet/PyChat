@@ -22,7 +22,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="net\Server.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PyChat_Server.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="net\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
