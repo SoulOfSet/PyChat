@@ -25,6 +25,9 @@
     <Compile Include="netobj\Client.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="netobj\ClientManager.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="netobj\Server.py">
       <SubType>Code</SubType>
     </Compile>

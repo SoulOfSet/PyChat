@@ -1,28 +1,36 @@
 from threading import Thread
+from netobj import ClientManager
 
-class Client(Thread):
+class Client(Thread, ClientManager):
     
-    def __init__(self):
+    _conn = ""
+    _addr = ""
+
+    def __init__(self, conn, addr):
         super(Client, self).__init__()
         self.daemon = True;
 
-
+        self.__conn = conn
+        self.__addr = addr
         
-    def run(self, conn, addr):
-        conn.send(str.encode("Hello there\n"))
+    def run(self):
+        self._conn.send(str.encode("Hello there\n"))
         while True:
-            data = conn.recv(2048)
+            data = self._conn.recv(2048)
             print(data.decode('utf-8'), "\n")
             reply = "We got message: " + data.decode('utf-8') + "\n"
             
             if not data or data == "q":
-                conn.sendall(str.encode("Goodbye"))
-                print("Client from", addr[0], "has quit")
+                self._conn.sendall(str.encode("Goodbye"))
+                print("Client from", self._addr[0], "has quit")
                 break
 
-            conn.sendall(str.encode(reply))
-        conn.close()
+            self._conn.sendall(str.encode(reply))
+        self._conn.close()
 
     def cancel(self):
         """End this timer thread"""
         self.cancelled = True
+
+    def __str__(self):
+        print("Client.py:", self._addr[0], ":", str(self._addr[1]))

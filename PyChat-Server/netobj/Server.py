@@ -1,5 +1,5 @@
 import socket
-from netobj import Client
+from netobj import ClientManager
 
 class Server(object):
     'The Server object'
@@ -7,6 +7,9 @@ class Server(object):
     #Define our address an port variable for the socket to bind to
     _addr = ""
     _port = ""
+    
+    #Client manager declaration
+    _clientManager = None
 
     #Define a socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,6 +18,9 @@ class Server(object):
     def __init__(self, addr="localhost", port=5400):
         self._addr = addr
         self._port = port
+
+        #Create a new instance of the client manager
+        self._clientManager = ClientManager.ClientManager;
 
     #Start method that binds the server
     def start(self):
@@ -35,5 +41,4 @@ class Server(object):
             conn, addr = self.s.accept()
             print('Server.py: Client connection from address '+addr[0]+':'+str(addr[1]))
 
-            client = Client.Client()
-            client.run(conn, addr)
+            self._clientManager.spawn_new_client(conn, addr)
