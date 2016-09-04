@@ -20,7 +20,7 @@ class Server(object):
         self._port = port
 
         #Create a new instance of the client manager
-        self._clientManager = ClientManager.ClientManager;
+        self._clientManager = ClientManager.ClientManager();
 
     #Start method that binds the server
     def start(self):
@@ -40,5 +40,5 @@ class Server(object):
         while True:
             conn, addr = self.s.accept()
             print('Server.py: Client connection from address '+addr[0]+':'+str(addr[1]))
-
             self._clientManager.spawn_new_client(conn, addr)
+            print(self._clientManager, "\n")

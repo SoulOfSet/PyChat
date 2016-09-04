@@ -1,20 +1,20 @@
 from threading import Thread
 from netobj import ClientManager
 
-class Client(Thread, ClientManager):
+class Client(Thread):
     
-    _conn = ""
-    _addr = ""
+    _conn = "";
+    _addr = "";
 
     def __init__(self, conn, addr):
-        super(Client, self).__init__()
+        Thread.__init__(self)
         self.daemon = True;
-
-        self.__conn = conn
-        self.__addr = addr
+        self._conn = conn
+        self._addr = addr
         
     def run(self):
         self._conn.send(str.encode("Hello there\n"))
+        
         while True:
             data = self._conn.recv(2048)
             print(data.decode('utf-8'), "\n")
@@ -32,5 +32,6 @@ class Client(Thread, ClientManager):
         """End this timer thread"""
         self.cancelled = True
 
-    def __str__(self):
-        print("Client.py:", self._addr[0], ":", str(self._addr[1]))
+
+    def getAddress(self):
+        return self._addr[0]

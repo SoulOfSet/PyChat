@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="instance\Managers.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="netobj\Client.py">
       <SubType>Code</SubType>
     </Compile>
@@ -38,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="netobj\" />
+    <Folder Include="instance\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
