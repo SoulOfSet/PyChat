@@ -5,6 +5,8 @@ class Client(Thread):
     _conn = ""
     _addr = ""
     _manager = ""
+    _username = ""
+
     def __init__(self, conn, addr, manager):
 
         #Run the super class method so this runs as a thread
@@ -25,8 +27,19 @@ class Client(Thread):
         #Greet the user
         self._conn.send(str.encode("#0000\n"))
 
+        self._conn.send(str.encode("#0001\n"))
+
+        authenticated = False
+
+        #Get the username for the user
+        username = self._conn.recv(2048)
+        self._username = username.decode('utf-8')
+
+        if(username != ""):
+            authenticated = True;
+
         #Loop for receiving messages on this thread
-        while True:
+        while True and authenticated:
             #Data received. Must be decoded from byte string to string
             data = self._conn.recv(2048)
             print(data.decode('utf-8'), "\n")
@@ -36,7 +49,7 @@ class Client(Thread):
                 print("Client from", self._addr[0], "has quit")
                 break
 
-            self._manager.broadcast(reply)
+            self._manager.broadcast(reply, self._username)
         self._conn.close()
 
     def cancel(self):

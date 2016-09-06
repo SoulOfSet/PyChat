@@ -1,7 +1,7 @@
 import socket
 from netobj import ClientRecv, ClientSend
 
-class Client(object):
+class TerminalClient(object):
     """Disposable client class"""
     _addr = ""
     _port = ""
@@ -11,7 +11,7 @@ class Client(object):
     _s.settimeout(1000)
 
     #Stop variable for client
-    continueRunning = True;
+    _continueRunning = True;
 
     def __init__(self, addr="localhost", port=4500):
         self._addr = addr
@@ -24,8 +24,9 @@ class Client(object):
             self._s.connect((self._addr, self._port))
             self.run()
             return True
-        except:
-            print("Client.py: Unable to connect")
+        except socket.error as e:
+            print(e)
+            print("Client.py: Unable to connect to server")
             return False
 
     def run(self):
@@ -33,5 +34,5 @@ class Client(object):
         x.start()
         y = ClientSend.ClientSend(self)
         y.start()
-        while continueRunning:
+        while self._continueRunning:
             pass

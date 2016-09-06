@@ -15,12 +15,17 @@ class ClientManager(object):
 
         #Add client class to list of clients
         self._clientList.append(client)
+
+        #Begin that client's thread
         client.start()
 
+    #String method for printing out the addresses of the clients
     def __str__(self):
         for x in self._clientList:
             return x.getAddress()
 
-    def broadcast(self, message):
+    #Sends message to all connected clients
+    def broadcast(self, message, user):
         for client in self._clientList:
-            client._conn.send(message.encode("utf-8"))
+            clientMessage = user + ": " + message
+            client._conn.send(clientMessage.encode())

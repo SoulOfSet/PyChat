@@ -23,7 +23,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="netobj\Client.py">
+    <Compile Include="env\Window_Connect.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="env\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="netobj\TerminalClient.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="netobj\ClientRecv.py">
@@ -39,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="netobj\" />
+    <Folder Include="env\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
