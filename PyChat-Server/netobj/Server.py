@@ -15,7 +15,7 @@ class Server(object):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     #Constructor with default values for address and port
-    def __init__(self, addr="localhost", port=5400):
+    def __init__(self, addr="localhost", port=4500):
         self._addr = addr
         self._port = port
 

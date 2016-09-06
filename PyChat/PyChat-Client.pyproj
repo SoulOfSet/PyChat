@@ -23,7 +23,22 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="netobj\Client.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="netobj\ClientRecv.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="netobj\ClientSend.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="netobj\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PyChat_Client.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="netobj\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
