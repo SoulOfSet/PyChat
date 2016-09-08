@@ -23,10 +23,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="env\Window_Connect.py">
+    <Compile Include="env\WindowConnect.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="env\WindowManager.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="env\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="netobj\GuiClient.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="netobj\TerminalClient.py">
@@ -36,6 +42,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="netobj\ClientSend.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="netobj\__init__.py">

@@ -16,9 +16,10 @@ class TerminalClient(object):
     def __init__(self, addr="localhost", port=4500):
         self._addr = addr
         self._port = port
-        print("Client.py: Client initialised with address", self._addr, "and port", self._port)
+        print("TerminalClient.py: Client initialised with address", self._addr, "and port", self._port)
 
     def connect(self):
+        print("TerminalClient.py: Attempting connection")
         try:
             print(self._addr, self._port)
             self._s.connect((self._addr, self._port))
@@ -30,9 +31,9 @@ class TerminalClient(object):
             return False
 
     def run(self):
-        x = ClientRecv.ClientRecv(self)
-        x.start()
-        y = ClientSend.ClientSend(self)
-        y.start()
+        clientRecv = ClientRecv.ClientRecv(self)
+        clientRecv.start()
+        clientSend = ClientSend.ClientSend(self)
+        clientSend.start()
         while self._continueRunning:
             pass
