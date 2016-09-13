@@ -18,7 +18,7 @@ class GuiClient(Thread):
     #Window manager
     _window = ""
 
-    #recv even callback
+    #recv event callback
     _recvCallback = ""
 
     def __init__(self, manager, recvCallback, addr="localhost", port=4500):
@@ -26,6 +26,7 @@ class GuiClient(Thread):
         #Run the super class method so this runs as a thread
         Thread.__init__(self)
 
+        #Set locals
         self._addr = addr
         self._port = port
         self._window = manager
@@ -33,9 +34,11 @@ class GuiClient(Thread):
 
         print("GuiClient.py: Client initialised with address", self._addr, "and port", self._port)
 
+    #Attempt client server connection
     def connect(self):
         print("GuiClient.py: Attempting connection")
         try:
+            #Use our socket to try to connect
             print(self._addr, self._port)
             self._s.connect((self._addr, self._port))
             return True
@@ -44,12 +47,12 @@ class GuiClient(Thread):
             print("GuiClient.py: Unable to connect to server")
             return False
 
+    #The receive thread for getting data sent asynchronously
     def run(self):
         print("GuiClient.py: Running receive server")
+        #Run receive thread with callback needed to get data
         clientRecv = ClientRecv.ClientRecv(self, self._recvCallback)
         clientRecv.start()
-        while(self._continueRunning):
-            pass
 
     def cancel(self):
         """End this timer thread"""

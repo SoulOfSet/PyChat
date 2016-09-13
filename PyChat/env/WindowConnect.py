@@ -55,7 +55,7 @@ class WindowConnect(tk.Frame):
         #Attempt connection
         connection = self._windowManager.connectClient(self._addrInput.get(), int(self._portInput.get()))
         if(connection == False):
-             self._errorText.set("Connection Failed")
+            self._errorText.set("Connection Failed")
         else:
             self._errorText.set("Connected!")
         
