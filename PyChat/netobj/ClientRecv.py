@@ -21,37 +21,30 @@ class ClientRecv(Thread):
                data = self._client._s.recv(2048)
                print(data.decode("utf-8"), "\n")
         else: #Should be gui
-
-            #The first bit of data that should be received from the server
+            #The first bit of data that should be received from the server is an auth request
             initialRecv = self._client._s.recv(2048)
-            if(initialRecv.decode("utf-8") == "CLIENT_CONNECT"):
+            if(initialRecv.decode("utf-8") == "CLIENT_AUTH_REQ"):
                 #TODO: When done with localization class fix this
-                print("ClientRecv.py: CLIENT GREETING")
-            else:
-                #The server isn't functioning correctly
-                print("ClientRecv.py: Not receiving data from the server")
+                print("ClientRecv.py: CLIENT REQUEST USERNAME")
 
-                #User name prompt + message
+                #Let the gui know that the server is now expecting a username from this location <3
+                self._client.notifyGuiEvent("PROMPT_AUTH")
+
+                #Authentication success/fail
                 initialRecv = self._client._s.recv(2048)
-                if(initialRecv.decode("utf-8") == "CLIENT_AUTH_REQ"):
-                    #TODO: When done with localization class fix this
-                    print("ClientRecv.py: CLIENT REQUEST USERNAME")
-
-                    #Authentication success/fail
-                    initialRecv = self._client._s.recv(2048)
-                    if(initialRecv.decode("utf-8") == "CLIENT_AUTH_SUCC"):
-                        print("ClientRecv.py: CLIENT AUTH SUCCESS")
-                        #Authentication was successfull. Run a consistent receive
-                        while runRecv:
-                           data = self._client._s.recv(2048)
-                           print(data.decode("utf-8"), "\n")
-                           self._recvCallback(data.decode())
-                    else:
-                        #The server isn't functioning correctly
-                        print("ClientRecv.py: Not receiving expected data from the server")
-
+                if(initialRecv.decode("utf-8") == "CLIENT_AUTH_SUCC"):
+                    print("ClientRecv.py: CLIENT AUTH SUCCESS")
+                    #Authentication was successfull. Run a consistent receive
+                    while runRecv:
+                        data = self._client._s.recv(2048)
+                        print(data.decode("utf-8"), "\n")
+                        self._recvCallback(data.decode())
                 else:
+                    #The server isn't functioning correctly
                     print("ClientRecv.py: Not receiving expected data from the server")
+
+            else:
+                print("ClientRecv.py: Not receiving expected data from the server")
 
             
 

@@ -24,10 +24,8 @@ class Client(Thread):
     
     #Method ran when calling start()    
     def run(self):
-        #Greet the user
-        self._conn.send(str.encode("CLIENT_CONNECT\n"))
-
-        self._conn.send(str.encode("CLIENT_AUTH_REQ\n"))
+        #Ask user for atuh details
+        self._conn.send(str.encode("CLIENT_AUTH_REQ"))
 
         authenticated = False
 
@@ -37,7 +35,7 @@ class Client(Thread):
 
         if(username != ""):
             authenticated = True;
-            self._conn.send(str.encode("CLIENT_AUTH_SUCC\n"))
+            self._conn.send(str.encode("CLIENT_AUTH_SUCC"))
         #Loop for receiving messages on this thread
         while True and authenticated:
             #Data received. Must be decoded from byte string to string

@@ -1,5 +1,6 @@
 import tkinter as tk
 from env import WindowConnect
+from env import WindowAuthPrompt
 from netobj import GuiClient
 
 class WindowManager(object):
@@ -11,16 +12,17 @@ class WindowManager(object):
     #Our connection to the server
     _connection = ""
 
+    #Our window
+    _window = ""
+
     def __init__(self):
         #Initialise tk
-        self._rootWidget = tk.Tk("PyChat")
+        self._rootWidget = tk.Tk()
 
         #Make a new instance of the connection window pane
-        WindowConnect.WindowConnect(self)
+        self._window = tk.Toplevel(self._rootWidget)
+        connect = WindowConnect.WindowConnect(self._window)
         
-    def run(self):
-        #Run the tk look
-        self._rootWidget.mainloop()
 
     #Connect client to server
     def connectClient(self, addr, port):
@@ -43,6 +45,10 @@ class WindowManager(object):
     #Method for dealing with data. Used as a callback
     def messageRecv(self, message):
         print(message)
-    
+
+    def guiEventHandler(self, event):
+        print("WindowManager: Received GUI event", event)
+        
+        
 
 
