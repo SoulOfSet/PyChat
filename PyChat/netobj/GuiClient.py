@@ -1,6 +1,7 @@
 import socket
 from threading import Thread
 from netobj import ClientRecv
+import tkinter as tk
 
 class GuiClient(Thread):
 

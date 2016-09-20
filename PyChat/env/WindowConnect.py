@@ -1,17 +1,16 @@
 import tkinter as tk
-
 class WindowConnect(tk.Frame):
 
     #Window manager
     _windowManager = ""
     #Labels
-    _greetLabel = _addrLabel = _portLabel = _infoLabel = ""
+    _greetLabel = _addrLabel = _portLabel = _errorLabel = ""
     #Entries
     _addrEntry = _portEntry = ""
     #Buttons
     _connectButton = ""
     #Variable streams
-    _infoText = _addrInput = _portInput = ""
+    _errorText = _addrInput = _portInput = ""
 
     def __init__(self, windowManager):
         tk.Frame.__init__(self)
@@ -20,10 +19,10 @@ class WindowConnect(tk.Frame):
         self._windowManager = windowManager
 
         #Set the parent widget from the manager
-        parentWidget = self
+        parentWidget = self._windowManager._rootWidget
 
         #Set up variable streams after tk init
-        self._infoText = tk.StringVar()
+        self._errorText = tk.StringVar()
         self._addrInput = tk.StringVar()
         self._portInput = tk.StringVar() 
 
@@ -44,20 +43,20 @@ class WindowConnect(tk.Frame):
         #Button
         self._connectButton = tk.Button(parentWidget, text="Connect", command=self.connect).grid(row="4", column="0", columnspan="2", ipady="5")
 
-        #Label for info
-        self._infoLabel = tk.Label(parentWidget, textvariable=self._infoText).grid(row="5", column="0", columnspan="2", ipady="5")
+        #Label for errors
+        self._errorLabel = tk.Label(parentWidget, textvariable=self._errorText).grid(row="5", column="0", columnspan="2", ipady="5")
 
     def connect(self):
         #Inform user of connection state
         print("Attempting to connect to", self._addrInput.get() + ":" + self._portInput.get())
-        self._infoText.set("Connecting...")
+        self._errorText.set("Connecting...")
 
         #Attempt connection
         connection = self._windowManager.connectClient(self._addrInput.get(), int(self._portInput.get()))
         if(connection == False):
-            self._infoText.set("Connection Failed")
+             self._errorText.set("Connection Failed")
         else:
-            self._infoText.set("Connected!")
+            self._errorText.set("Connected!")
         
     def quit(self):
         sys.exit()

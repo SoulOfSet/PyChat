@@ -13,8 +13,8 @@ class WindowAuthPrompt(tk.Frame):
     #Variable streams
     _infoText = _usernameInput = ""
 
-    def __init__(self, windowManager):
-        tk.Frame.__init__(self)
+    def __init__(self, parent, windowManager):
+        tk.Frame.__init__(self, parent)
 
         #Let this window know who's boss
         self._windowManager = windowManager
