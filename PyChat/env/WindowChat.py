@@ -1,27 +1,120 @@
-import PyQt5.QtWidgets as qtWidget
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget, QMainWindow
 
-class WindowChat(qtWidget.QWidget):
+
+class WindowChat(QMainWindow):
 
     #Window manager
     _windowManager = ""
 
-    def __init__(self):
+
+    def __init__(self, manager):
         super().__init__()
+        self._windowManager = manager
+        self.setupUI(self)
         
-        self.initUI()
+      
         
+    def setupUI(self, ChatWindow):               
         
-    def initUI(self):               
-        
-        qbtn = qtWidget.QPushButton('Quit', self)
-        qbtn.resize(qbtn.sizeHint())
-        qbtn.move(50, 50)       
-        
-        self.setGeometry(300, 300, 250, 150)
-        self.setWindowTitle('Quit button')    
-        self.show()    
+        ChatWindow.setObjectName("ChatWindow")
+        ChatWindow.resize(803, 613)
+        ChatWindow.setFixedSize(803, 613)
+
+        self.centralwidget = QtWidgets.QWidget(ChatWindow)
+        self.centralwidget.setObjectName("centralwidget")
+
+        #Vertical layout for the connected user list
+        self.userListWidget = QtWidgets.QWidget(self.centralwidget)
+        self.userListWidget.setGeometry(QtCore.QRect(600, 0, 599, 490))
+        self.userListWidget.setObjectName("userListWidget")
+        self.userListLayout = QtWidgets.QVBoxLayout(self.userListWidget)
+        self.userListLayout.setContentsMargins(0, 0, 0, 0)
+        self.userListLayout.setObjectName("userListLayout")
+        self.userList = QtWidgets.QListView(self.userListWidget)
+        self.userList.setObjectName("userList")
+        self.userListLayout.addWidget(self.userList)
+
+        #Vertical layout for the chat input
+        self.chatInputWidget = QtWidgets.QWidget(self.centralwidget)
+        self.chatInputWidget.setGeometry(QtCore.QRect(0, 499, 701, 73))
+        self.chatInputWidget.setObjectName("chatInputWidget")
+        self.chatInLayout = QtWidgets.QVBoxLayout(self.chatInputWidget)
+        self.chatInLayout.setContentsMargins(0, 0, 0, 0)
+        self.chatInLayout.setObjectName("chatInLayout")
+        self.chatIn = QtWidgets.QLineEdit(self.chatInputWidget)
+        self.chatIn.setObjectName("chatIn")
+        self.chatInLayout.addWidget(self.chatIn)
 
 
+        #Grid layout for the button
+        self.btnGridWidget = QtWidgets.QWidget(self.centralwidget)
+        self.btnGridWidget.setGeometry(QtCore.QRect(700, 500, 101, 71))
+        self.btnGridWidget.setObjectName("btnGridWidget")
+        self.btnGridLayout = QtWidgets.QGridLayout(self.btnGridWidget)
+        self.btnGridLayout.setContentsMargins(0, 0, 0, 0)
+        self.btnGridLayout.setObjectName("btnGridLayout")
+        self.sendBtn = QtWidgets.QPushButton(self.btnGridWidget)
+        self.sendBtn.setObjectName("sendBtn")
+        self.btnGridLayout.addWidget(self.sendBtn, 0, 0, 1, 1)
+
+        #Chat out layout
+        self.chatOutputWidget = QtWidgets.QWidget(self.centralwidget)
+        self.chatOutputWidget.setGeometry(QtCore.QRect(0, 0, 599, 490))
+        self.chatOutputWidget.setObjectName("chatOutputWidget")
+        self.chatOutLayout = QtWidgets.QHBoxLayout(self.chatOutputWidget)
+        self.chatOutLayout.setContentsMargins(0, 0, 0, 0)
+        self.chatOutLayout.setObjectName("chatOutLayout")
+        self.chatOut = QtWidgets.QTextEdit(self.chatOutputWidget)
+        self.chatOut.setReadOnly(True)
+        self.chatOut.setObjectName("chatOut")
+        self.chatOutLayout.addWidget(self.chatOut)
+        self.chatOutScroll = QtWidgets.QScrollBar(self.chatOutputWidget)
+        self.chatOutScroll.setOrientation(QtCore.Qt.Vertical)
+        self.chatOutScroll.setObjectName("chatOutScroll")
+        self.chatOutLayout.addWidget(self.chatOutScroll)
+
+
+        ChatWindow.setCentralWidget(self.centralwidget)
+
+        #Menu bar
+        self.menubar = QtWidgets.QMenuBar(ChatWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 803, 21))
+        self.menubar.setObjectName("menubar")
+
+        #Menu file button
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        #Menu file action
+        self.menuFile.triggered.connect(lambda: self._windowManager.guiEventHandler("OPEN_WINDOW_CONNECT"))
+        ChatWindow.setMenuBar(self.menubar)
+
+
+        self.statusbar = QtWidgets.QStatusBar(ChatWindow)
+        self.statusbar.setObjectName("statusbar")
+        ChatWindow.setStatusBar(self.statusbar)
+        self.actionConnect = QtWidgets.QAction(ChatWindow)
+        self.actionConnect.setObjectName("actionConnect")
+        self.actionExit = QtWidgets.QAction(ChatWindow)
+        self.actionExit.setObjectName("actionExit")
+        self.menuFile.addAction(self.actionConnect)
+        self.menuFile.addAction(self.actionExit)
+        self.menubar.addAction(self.menuFile.menuAction())
+
+        self.retranslateUi(ChatWindow)
+        QtCore.QMetaObject.connectSlotsByName(ChatWindow)
+
+    def retranslateUi(self, ChatWindow):
+        _translate = QtCore.QCoreApplication.translate
+        ChatWindow.setWindowTitle(_translate("ChatWindow", "PyChat - Disconnected"))
+        self.sendBtn.setText(_translate("ChatWindow", "Send"))
+        self.menuFile.setTitle(_translate("ChatWindow", "File"))
+        self.actionConnect.setText(_translate("ChatWindow", "Connect"))
+        self.actionExit.setText(_translate("ChatWindow", "Exit"))
+
+
+    def hello(self):
+        print("hello")
         
     def quit(self):
         sys.exit()

@@ -26,9 +26,6 @@
     <Compile Include="env\WindowChat.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="env\WindowAuthPrompt.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="env\WindowConnect.py">
       <SubType>Code</SubType>
     </Compile>
@@ -38,29 +35,24 @@
     <Compile Include="env\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="netobj\GuiClient.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="netobj\TerminalClient.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="netobj\ClientRecv.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="netobj\ClientSend.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="netobj\ClientRecv.py" />
+    <Compile Include="netobj\ClientSend.py" />
+    <Compile Include="netobj\GuiClient.py" />
+    <Compile Include="netobj\TerminalClient.py" />
+    <Compile Include="netobj\__init__.py" />
     <Compile Include="test.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="netobj\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyChat_Client.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="netobj\" />
+    <Folder Include="netobj\__pycache__\" />
     <Folder Include="env\" />
+    <Folder Include="qt\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="qt\chatwindow.ui" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

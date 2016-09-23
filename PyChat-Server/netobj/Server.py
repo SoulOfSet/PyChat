@@ -20,7 +20,7 @@ class Server(object):
         self._port = port
 
         #Create a new instance of the client manager
-        self._clientManager = ClientManager.ClientManager();
+        self._clientManager = ClientManager.ClientManager()
 
     #Start method that binds the server
     def start(self):
