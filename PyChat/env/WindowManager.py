@@ -1,7 +1,6 @@
 import sys
 from netobj import GuiClient
-from env import WindowChat
-from env import WindowConnect
+from env import WindowChat, WindowConnect, WindowAuth
 from PyQt5.QtWidgets import QApplication
 
 class WindowManager(object):
@@ -38,15 +37,18 @@ class WindowManager(object):
             return True
 
     def messageRecv(self, message):
-        print("wat")
+        self._mainWindow.writeOut(message)
+
+
+    def messageSend(self, message):
+        self._connection.messageSend(message)
 
     def guiEventHandler(self, event, **kwargs):
         print("WindowManager: Received GUI event", event)
 
         if(event == "OPEN_WINDOW_CONNECT"):
-            print("WindowManager: Opening connection window")
-            connectWindow = WindowConnect.WindowConnect(self)
-            connectWindow.exec_()
+            print("WindowManager: Asking main window to open connect dialog")
+            self._mainWindow.openDialog("connect")
 
         elif(event == "CLIENT_ATTEMPT_CONNECT"):
             print(kwargs)
@@ -54,6 +56,13 @@ class WindowManager(object):
                 return True
             else:
                 return False
+
+        elif(event == "OPEN_AUTH_WINDOW"):
+            print("WindowManager.py: Prompt for username")
+            print("WindowManager.py: Prefixing next output for server with UNAME")
+            self._mainWindow.prefixNextOut("UNAME")
+            self._mainWindow.writeOut("<p style='color:red'>Enter your username:</p>")
+            
 
         
         

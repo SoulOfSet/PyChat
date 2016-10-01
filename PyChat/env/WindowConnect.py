@@ -56,7 +56,7 @@ class WindowConnect(QtWidgets.QDialog):
         self.errorLabel.setObjectName("errorLabel")
 
         self.connectBtn = QtWidgets.QPushButton(ConnectWindow)
-        self.connectBtn.setGeometry(QtCore.QRect(150, 240, 100, 51))
+        self.connectBtn.setGeometry(QtCore.QRect(150, 240, 100, 50))
         self.connectBtn.setObjectName("connectBtn")
         self.connectBtn.clicked.connect(lambda: self.connectBtnClick(self.addressInput.text(), self.portInput.text()))
 
@@ -80,7 +80,7 @@ class WindowConnect(QtWidgets.QDialog):
             self.errorLabel.setText("Please input a valid port and/or address")
         else:
             if(self._windowManager.guiEventHandler("CLIENT_ATTEMPT_CONNECT", port=port, address=address)):
-                self.destroy()
+                self.close()
             else:
                 self.errorLabel.setText("Unable to connect")
                 

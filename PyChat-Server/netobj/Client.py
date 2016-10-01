@@ -27,15 +27,29 @@ class Client(Thread):
         #Ask user for atuh details
         self._conn.send(str.encode("CLIENT_AUTH_REQ"))
 
-        authenticated = False
+        authenticated = False 
 
-        #Get the username for the user
-        username = self._conn.recv(2048)
-        self._username = username.decode('utf-8')
+        while(authenticated == False):
+            #Get the username for the user
+            username = self._conn.recv(2048)
+            username = username.decode('utf-8')
 
-        if(username != ""):
-            authenticated = True;
-            self._conn.send(str.encode("CLIENT_AUTH_SUCC"))
+            #Split username string
+            unameSplit = username.split()
+
+            #Look for uname prefix
+            if(unameSplit[0] == "UNAME"):
+                #Make sure its not empty
+                if(unameSplit[1] != ""):
+                    self._username = unameSplit[1]
+                    authenticated = True
+                    self._conn.send(str.encode("CLIENT_AUTH_SUCC"))
+                else:
+                    self._conn.send(str.encode("CLIENT_AUTH_FAIL"))
+            else:
+                self._conn.send(str.encode("CLIENT_AUTH_FAIL"))
+
+
         #Loop for receiving messages on this thread
         while True and authenticated:
             #Data received. Must be decoded from byte string to string

@@ -28,7 +28,7 @@ class ClientRecv(Thread):
                 print("ClientRecv.py: CLIENT REQUEST USERNAME")
 
                 #Let the gui know that the server is now expecting a username from this location <3
-                self._client.notifyGuiEvent("PROMPT_AUTH")
+                self._client.notifyGuiEvent("OPEN_AUTH_WINDOW")
 
                 #Authentication success/fail
                 initialRecv = self._client._s.recv(2048)

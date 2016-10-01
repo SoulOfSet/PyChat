@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QMainWindow
+from env import WindowConnect, WindowAuth
 
 
 class WindowChat(QMainWindow):
@@ -7,6 +8,10 @@ class WindowChat(QMainWindow):
     #Window manager
     _windowManager = ""
 
+
+    #Prefix
+    _prefixNext = False
+    _prefix = ""
 
     def __init__(self, manager):
         super().__init__()
@@ -16,7 +21,7 @@ class WindowChat(QMainWindow):
       
         
     def setupUI(self, ChatWindow):               
-        
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         ChatWindow.setObjectName("ChatWindow")
         ChatWindow.resize(803, 613)
         ChatWindow.setFixedSize(803, 613)
@@ -56,6 +61,7 @@ class WindowChat(QMainWindow):
         self.btnGridLayout.setObjectName("btnGridLayout")
         self.sendBtn = QtWidgets.QPushButton(self.btnGridWidget)
         self.sendBtn.setObjectName("sendBtn")
+        self.sendBtn.clicked.connect(lambda: self.messageSend())
         self.btnGridLayout.addWidget(self.sendBtn, 0, 0, 1, 1)
 
         #Chat out layout
@@ -66,13 +72,10 @@ class WindowChat(QMainWindow):
         self.chatOutLayout.setContentsMargins(0, 0, 0, 0)
         self.chatOutLayout.setObjectName("chatOutLayout")
         self.chatOut = QtWidgets.QTextEdit(self.chatOutputWidget)
-        self.chatOut.setReadOnly(True)
+        
+        #self.chatOut.setReadOnly(True)
         self.chatOut.setObjectName("chatOut")
         self.chatOutLayout.addWidget(self.chatOut)
-        self.chatOutScroll = QtWidgets.QScrollBar(self.chatOutputWidget)
-        self.chatOutScroll.setOrientation(QtCore.Qt.Vertical)
-        self.chatOutScroll.setObjectName("chatOutScroll")
-        self.chatOutLayout.addWidget(self.chatOutScroll)
 
 
         ChatWindow.setCentralWidget(self.centralwidget)
@@ -103,6 +106,7 @@ class WindowChat(QMainWindow):
 
         self.retranslateUi(ChatWindow)
         QtCore.QMetaObject.connectSlotsByName(ChatWindow)
+        self.writeOut("Hello!")
 
     def retranslateUi(self, ChatWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -113,8 +117,37 @@ class WindowChat(QMainWindow):
         self.actionExit.setText(_translate("ChatWindow", "Exit"))
 
 
-    def hello(self):
-        print("hello")
+    def openDialog(self, window):
+        if(window == "connect"):
+            print("WindowChat.py: Opening connection window")
+            connectWindow = WindowConnect.WindowConnect(self._windowManager)
+            connectWindow.show()
+
+    def writeOut(self, toWrite, **kwargs):
+        self.chatOut.append(toWrite)
+
+    #Set a prefix for next chat out for the server to work with
+    def prefixNextOut(self, prefix):
+        self._prefixNext = True
+        self._prefix = prefix
+
+    def messageSend(self):
+        userMessage = self.chatIn.text()
+
+        if(userMessage != ""):
+            if(self._prefixNext == True):
+                userMessage = self._prefix + " " + userMessage
+                self._windowManager.messageSend(userMessage)
+                self.chatIn.clear()
+                self.clearPrefix()
+            else:
+                self._windowManager.messageSend(userMessage)
+                self.chatIn.clear()
+
+    def clearPrefix(self):
+        self._prefixNext = False
+        self._prefix = ""
+        
         
     def quit(self):
         sys.exit()

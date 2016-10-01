@@ -4,7 +4,6 @@ import time
 class ClientManager(object):
     _clientList = []
 
-    data = "asdf"
 
     def __init__(self):
         print("ClientManager.py: Client Manager initialised\n")

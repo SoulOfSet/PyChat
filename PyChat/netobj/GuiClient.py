@@ -59,6 +59,9 @@ class GuiClient(Thread):
         """End this timer thread"""
         self.cancelled = True
 
+    def messageSend(self, message):
+        self._s.send(str.encode(message))
+
     def notifyGuiEvent(self, event):
         print("GuiClient.py: Received GUI event", event + ".", "Forwading to window manager")
         #Send event to window manager handler

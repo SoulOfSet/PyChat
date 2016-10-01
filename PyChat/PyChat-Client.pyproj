@@ -23,6 +23,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="env\WindowAuth.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="env\WindowChat.py">
       <SubType>Code</SubType>
     </Compile>
@@ -40,6 +43,7 @@
     <Compile Include="netobj\GuiClient.py" />
     <Compile Include="netobj\TerminalClient.py" />
     <Compile Include="netobj\__init__.py" />
+    <Compile Include="qt\WindowAuth.py" />
     <Compile Include="test.py">
       <SubType>Code</SubType>
     </Compile>
