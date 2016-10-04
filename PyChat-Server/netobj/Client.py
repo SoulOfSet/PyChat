@@ -44,6 +44,7 @@ class Client(Thread):
                     self._username = unameSplit[1]
                     authenticated = True
                     self._conn.send(str.encode("CLIENT_AUTH_SUCC"))
+                    self._manager.broadcastClientList()
                 else:
                     self._conn.send(str.encode("CLIENT_AUTH_FAIL"))
             else:
@@ -61,7 +62,7 @@ class Client(Thread):
                 print("Client from", self._addr[0], "has quit")
                 break
 
-            self._manager.broadcast(reply, self._username)
+            self._manager.broadcastText(reply, self._username, "TEXT")
         self._conn.close()
 
     def cancel(self):

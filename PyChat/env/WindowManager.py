@@ -24,7 +24,7 @@ class WindowManager(object):
         qApp.exec_()
         
         
-
+    #Bind clinet to socket server
     def connectClient(self, addr, port):
         self._connection = GuiClient.GuiClient(self, self.messageRecv, addr, port)
         attempt = self._connection.connect()
@@ -36,10 +36,18 @@ class WindowManager(object):
             self._connection.start()
             return True
 
+    #On message receive
     def messageRecv(self, message):
-        self._mainWindow.writeOut(message)
+        #Split message
+        messageSplit = message.split()
 
+        if(messageSplit[0] == "TEXT"):
+            self._mainWindow.writeOut(" ".join(messageSplit[2:]), messageSplit[1])
 
+        elif(messageSplit[0] == "CLIENT_LIST"):
+            self._mainWindow.updateClientList(" ".join(messageSplit[2:]))
+
+    #On message send
     def messageSend(self, message):
         self._connection.messageSend(message)
 

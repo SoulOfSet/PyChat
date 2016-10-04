@@ -39,6 +39,8 @@ class WindowChat(QMainWindow):
         self.userList = QtWidgets.QListView(self.userListWidget)
         self.userList.setObjectName("userList")
         self.userListLayout.addWidget(self.userList)
+        self.userModel = QtGui.QStandardItemModel(self.userList)
+        self.userList.setModel(self.userModel)
 
         #Vertical layout for the chat input
         self.chatInputWidget = QtWidgets.QWidget(self.centralwidget)
@@ -123,8 +125,12 @@ class WindowChat(QMainWindow):
             connectWindow = WindowConnect.WindowConnect(self._windowManager)
             connectWindow.show()
 
-    def writeOut(self, toWrite, **kwargs):
-        self.chatOut.append(toWrite)
+    def writeOut(self, message="", user="", **kwargs):
+        if(user != ""):
+            toSend = user + ": " + message
+            self.chatOut.append(toSend)
+        else:
+            self.chatOut.append(message)
 
     #Set a prefix for next chat out for the server to work with
     def prefixNextOut(self, prefix):
@@ -143,6 +149,13 @@ class WindowChat(QMainWindow):
             else:
                 self._windowManager.messageSend(userMessage)
                 self.chatIn.clear()
+
+    def updateClientList(self, clients):
+        self.userModel.clear()
+        users = clients.split()
+        for user in users:
+            item = QtGui.QStandardItem(user)
+            self.userModel.appendRow(item)
 
     def clearPrefix(self):
         self._prefixNext = False

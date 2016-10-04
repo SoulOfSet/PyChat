@@ -24,7 +24,17 @@ class ClientManager(object):
             return x.getAddress()
 
     #Sends message to all connected clients
-    def broadcast(self, message, user):
+    def broadcastText(self, message, user, type):
         for client in self._clientList:
-            clientMessage = user + ": " + message
+            clientMessage = type + " " + user + " " + message
             client._conn.send(clientMessage.encode())
+
+    #Send client list update package to all connected clients
+    def broadcastClientList(self):
+        #Build broadcast string
+        clientList = ""
+        for client in self._clientList:
+            if(client._username != ""):
+                clientList = clientList + " " + client._username
+
+        self.broadcastText(clientList, "Server", "CLIENT_LIST")
