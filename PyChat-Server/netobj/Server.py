@@ -39,6 +39,5 @@ class Server(object):
 
         while True:
             conn, addr = self.s.accept()
-            print('Server.py: Client connection from address '+addr[0]+':'+str(addr[1]))
+            print('Server.py: Client incoming connection from address '+addr[0]+':'+str(addr[1]))
             self._clientManager.spawn_new_client(conn, addr)
-            print(self._clientManager, "\n")

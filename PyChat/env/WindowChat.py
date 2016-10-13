@@ -126,11 +126,20 @@ class WindowChat(QMainWindow):
             connectWindow.show()
 
     def writeOut(self, message="", user="", **kwargs):
+
+        additionString = ""
+
+        if(kwargs != None):
+            for v in kwargs:
+                additionString = additionString + v + "=" + "'" + kwargs[v] + "' " 
+
         if(user != ""):
-            toSend = user + ": " + message
+            toSend = "<font " + additionString + ">" + user + ": " + message + "</font>"
+            print("WindowChat.py:", toSend)
             self.chatOut.append(toSend)
         else:
-            self.chatOut.append(message)
+            toSend = "<font " + additionString + ">" + message + "</font>"
+            self.chatOut.append(toSend)
 
     #Set a prefix for next chat out for the server to work with
     def prefixNextOut(self, prefix):
@@ -155,6 +164,7 @@ class WindowChat(QMainWindow):
         users = clients.split()
         for user in users:
             item = QtGui.QStandardItem(user)
+            item.setEditable = False
             self.userModel.appendRow(item)
 
     def clearPrefix(self):

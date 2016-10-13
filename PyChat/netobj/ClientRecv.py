@@ -28,7 +28,7 @@ class ClientRecv(Thread):
                 print("ClientRecv.py: CLIENT REQUEST USERNAME")
 
                 #Let the gui know that the server is now expecting a username from this location <3
-                self._client.notifyGuiEvent("OPEN_AUTH_WINDOW")
+                self._client.notifyGuiEvent("PROMPT_AUTH")
 
                 #Authentication success/fail
                 initialRecv = self._client._s.recv(2048)
@@ -37,7 +37,7 @@ class ClientRecv(Thread):
                     #Authentication was successfull. Run a consistent receive
                     while runRecv:
                         data = self._client._s.recv(2048)
-                        print(data.decode("utf-8"), "\n")
+                        print("ClientRecv.py", data.decode("utf-8"), "\n")
                         self._recvCallback(data.decode())
                 else:
                     #The server isn't functioning correctly

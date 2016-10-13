@@ -7,6 +7,7 @@ class Client(Thread):
     _manager = ""
     _username = ""
 
+
     def __init__(self, conn, addr, manager):
 
         #Run the super class method so this runs as a thread
@@ -31,7 +32,14 @@ class Client(Thread):
 
         while(authenticated == False):
             #Get the username for the user
-            username = self._conn.recv(2048)
+            try:
+                username = self._conn.recv(2048)
+            except (ConnectionResetError, ConnectionAbortedError, ConnectionRefusedError, ConnectionResetError):
+                print("Client.py: Client with IP", self._addr, "failed to hold connection")
+                self._manager.removeClient(self._conn)
+                self.cancel()
+                break
+
             username = username.decode('utf-8')
 
             #Split username string
@@ -44,18 +52,25 @@ class Client(Thread):
                     self._username = unameSplit[1]
                     authenticated = True
                     self._conn.send(str.encode("CLIENT_AUTH_SUCC"))
-                    self._manager.broadcastClientList()
+                    self._manager.sendPrivateMessage("Welcome " + self._username + "!", self._username, "SERVER")
+                    self._manager.broadcastText(self._username + " has joined the server", "SERVER", "TEXT")
                 else:
                     self._conn.send(str.encode("CLIENT_AUTH_FAIL"))
             else:
                 self._conn.send(str.encode("CLIENT_AUTH_FAIL"))
 
-
+        self._manager.broadcastClientList()
         #Loop for receiving messages on this thread
         while True and authenticated:
             #Data received. Must be decoded from byte string to string
-            data = self._conn.recv(2048)
-            print(data.decode('utf-8'), "\n")
+            try:
+                data = self._conn.recv(2048)
+            except (ConnectionResetError, ConnectionAbortedError, ConnectionRefusedError, ConnectionResetError):
+                print("Client.py:", self._username, "has dropped the connection")
+                self._manager.removeClient(self._conn)
+                self.cancel()
+                break
+            print("TEXT" + " " + self._username + ": " + data.decode('utf-8'))
             reply = data.decode('utf-8')
             
             if not data:

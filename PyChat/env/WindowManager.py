@@ -41,8 +41,13 @@ class WindowManager(object):
         #Split message
         messageSplit = message.split()
 
+        #Message out from server
         if(messageSplit[0] == "TEXT"):
-            self._mainWindow.writeOut(" ".join(messageSplit[2:]), messageSplit[1])
+            #Determine if its a server or user message
+            if(messageSplit[1] != "SERVER"):
+                self._mainWindow.writeOut(" ".join(messageSplit[2:]), messageSplit[1])
+            else:
+                self._mainWindow.writeOut(" ".join(messageSplit[2:]), "Server", color="blue")
 
         elif(messageSplit[0] == "CLIENT_LIST"):
             self._mainWindow.updateClientList(" ".join(messageSplit[2:]))
@@ -65,11 +70,11 @@ class WindowManager(object):
             else:
                 return False
 
-        elif(event == "OPEN_AUTH_WINDOW"):
+        elif(event == "PROMPT_AUTH"):
             print("WindowManager.py: Prompt for username")
             print("WindowManager.py: Prefixing next output for server with UNAME")
             self._mainWindow.prefixNextOut("UNAME")
-            self._mainWindow.writeOut("<p style='color:red'>Enter your username:</p>")
+            self._mainWindow.writeOut("Enter your username:", "", color="red")
             
 
         
