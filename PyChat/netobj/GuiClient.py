@@ -7,11 +7,11 @@ class GuiClient(Thread):
 
     """Disposable client class"""
     _addr = ""
-    _port = ""
+    _port = "" 
 
     #Socket
     _s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    _s.settimeout(1000)
+    _s.settimeout(None)
 
     #Stop variable for client
     _continueRunning = True;

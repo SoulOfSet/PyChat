@@ -31,6 +31,7 @@ class ClientManager(object):
 
     #Sends message to particular user
     def sendPrivateMessage(self, message, userTo, userFrom):
+        print(userTo)
         for client in self._clientList:
             if(userTo == client._username):
                 if(userFrom == "SERVER"):

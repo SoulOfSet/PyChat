@@ -47,15 +47,21 @@ class Client(Thread):
 
             #Look for uname prefix
             if(unameSplit[0] == "UNAME"):
+                failReason = ""
                 #Make sure its not empty
-                if(unameSplit[1] != ""):
+                if(unameSplit[1] == "" or len(unameSplit[1]) < 3):
+                    print("Client.py: Invalid length for username")
+                    failReason = "Username must be more than 3 characters"
+                
+                
+                #If there is a failiure inform the client with the reason
+                if(failReason != ""):
+                    self._conn.send(str.encode("CLIENT_AUTH_FAIL" + " " + failReason))
+                else:
                     self._username = unameSplit[1]
                     authenticated = True
                     self._conn.send(str.encode("CLIENT_AUTH_SUCC"))
-                    self._manager.sendPrivateMessage("Welcome " + self._username + "!", self._username, "SERVER")
-                    self._manager.broadcastText(self._username + " has joined the server", "SERVER", "TEXT")
-                else:
-                    self._conn.send(str.encode("CLIENT_AUTH_FAIL"))
+                    self._manager.sendPrivateMessage("Welcome " + self._username, self._username, "SERVER")
             else:
                 self._conn.send(str.encode("CLIENT_AUTH_FAIL"))
 

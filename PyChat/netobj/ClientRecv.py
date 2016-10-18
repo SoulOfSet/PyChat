@@ -24,6 +24,7 @@ class ClientRecv(Thread):
             #The first bit of data that should be received from the server is an auth request
             initialRecv = self._client._s.recv(2048)
             if(initialRecv.decode("utf-8") == "CLIENT_AUTH_REQ"):
+
                 #TODO: When done with localization class fix this
                 print("ClientRecv.py: CLIENT REQUEST USERNAME")
 
@@ -32,13 +33,21 @@ class ClientRecv(Thread):
 
                 #Authentication success/fail
                 initialRecv = self._client._s.recv(2048)
+                initialRecvSplit = initialRecv.decode().split()
+                print(initialRecvSplit[0])
                 if(initialRecv.decode("utf-8") == "CLIENT_AUTH_SUCC"):
                     print("ClientRecv.py: CLIENT AUTH SUCCESS")
                     #Authentication was successfull. Run a consistent receive
                     while runRecv:
                         data = self._client._s.recv(2048)
-                        print("ClientRecv.py", data.decode("utf-8"), "\n")
-                        self._recvCallback(data.decode())
+                        print("ClientRecv.py", data.decode("utf-8"), "\n") 
+                        if(data):
+                            self._recvCallback(data.decode())
+
+                elif(initialRecvSplit[0] == "CLIENT_AUTH_FAIL"):
+                    self._client._window._mainWindow.writeOut("Server refused auth with message: " + " ".join(initialRecvSplit[1:]), "", color="red")
+                    self._client._window._mainWindow.writeOut("Disconnected from server", "", color="blue")
+
                 else:
                     #The server isn't functioning correctly
                     print("ClientRecv.py: Not receiving expected data from the server")
