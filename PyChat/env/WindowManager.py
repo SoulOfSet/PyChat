@@ -75,6 +75,14 @@ class WindowManager(object):
             print("WindowManager.py: Prefixing next output for server with UNAME")
             self._mainWindow.prefixNextOut("UNAME")
             self._mainWindow.writeOut("Enter your username:", "", color="red")
+
+        elif(event == "REQ_NEW_USER_PASS"):
+            self._mainWindow.prefixNextOut("PASS")
+            self._mainWindow.writeOut("Username not registered. Send password in format 'password password' to register user", "", color="red")
+
+        elif(event == "CLIENT_REQ_PASS"):
+            self._mainWindow.prefixNextOut("PASS")
+            self._mainWindow.writeOut("Please enter the password for this user", "", color="red")
             
 
         

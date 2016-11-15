@@ -4,8 +4,10 @@ import time
 class ClientManager(object):
     _clientList = []
 
+    _server = None
 
-    def __init__(self):
+    def __init__(self, server):
+        self._server = server
         print("ClientManager.py: Client Manager initialised\n")
 
     def spawn_new_client(self, conn, addr):
@@ -40,7 +42,7 @@ class ClientManager(object):
                     clientMessage = "PM " + userFrom + " " + message 
                 client._conn.send(clientMessage.encode())
                 break
-        print("ClientManager.py: User for private message not found")
+        print("ClientManager.py: User", userTo, "for private message not found")
 
     #Send client list update package to all connected clients
     def broadcastClientList(self):

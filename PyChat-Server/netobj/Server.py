@@ -8,6 +8,9 @@ class Server(object):
     _addr = ""
     _port = ""
     
+    #Database manager
+    _dbManager = None
+
     #Client manager declaration
     _clientManager = None
 
@@ -15,12 +18,13 @@ class Server(object):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     #Constructor with default values for address and port
-    def __init__(self, addr="localhost", port=4500):
+    def __init__(self, dbManager, addr="localhost", port=4500):
         self._addr = addr
         self._port = port
+        self._dbManager = dbManager
 
         #Create a new instance of the client manager
-        self._clientManager = ClientManager.ClientManager()
+        self._clientManager = ClientManager.ClientManager(self)
 
     #Start method that binds the server
     def start(self):

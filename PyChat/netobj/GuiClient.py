@@ -66,3 +66,9 @@ class GuiClient(Thread):
         print("GuiClient.py: Received GUI event", event + ".", "Forwading to window manager")
         #Send event to window manager handler
         self._window.guiEventHandler(event)
+
+    def disconnect(self):
+        self._s.close()
+        #Socket
+        self._s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._s.settimeout(None)
